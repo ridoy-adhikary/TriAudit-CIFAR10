@@ -18,7 +18,6 @@ TriAudit/
 ├── requirements.txt
 ├── pyproject.toml
 ├── TriAudit_Final_Project_Architecture.md   # authoritative blueprint
-├── SERVER_AUTO_IMPLEMENTATION.md            # optional server auto-run notes
 ├── configs/                                 # YAML experiment configs
 ├── dataset/
 │   ├── raw/                                 # CIFAR-10 download (gitignored)
@@ -30,16 +29,15 @@ TriAudit/
 │   ├── make_reliability_diagrams.py
 │   └── auto/                                # phased train/eval orchestration
 ├── tests/
-├── runs/                                    # metrics + eval JSON (checkpoints ignored)
-├── reports/
-│   ├── figures/                             # presentation figures
-│   ├── tables/
-│   └── TriAudit_research_report.md
-└── project_monitor/                         # phase gates (logs ignored)
+├── runs/                                    # seed metrics + eval JSON (checkpoints ignored)
+└── reports/
+    ├── figures/
+    ├── tables/
+    └── TriAudit_research_report.md
 ```
 
-**Tracked for GitHub:** code, configs, split indices, eval summaries, figures, report, phase-verify JSON.  
-**Not uploaded:** CIFAR-10 raw files (~340MB), `*.pt` checkpoints (~43MB each), orchestrator logs, `.cursor/`.
+**On GitHub:** code, configs, split indices, eval summaries, figures, report.  
+**Not uploaded:** CIFAR-10 raw files, `*.pt` checkpoints, phase-monitor / server ops files, pilots, push helpers.
 
 ## Setup
 
@@ -53,8 +51,6 @@ pip install -e .
 python scripts/prepare_data.py
 ```
 
-On the shared TriAudit server, use the `ridoy` conda env only (see `.cursor/rules` / architecture locks).
-
 ## Reproduce (high level)
 
 Phases follow `TriAudit_Final_Project_Architecture.md`:
@@ -67,7 +63,7 @@ Phases follow `TriAudit_Final_Project_Architecture.md`:
 | 5–6 | Attack + calibration evaluation |
 | 7–9 | Audit aggregation, stats/figures, research report |
 
-Unattended server path (optional): see `SERVER_AUTO_IMPLEMENTATION.md`.
+Orchestration entrypoint: `scripts/auto/run_phase.py`.
 
 Regenerate presentation figures from logged metrics:
 
