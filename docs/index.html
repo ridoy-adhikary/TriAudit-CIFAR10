@@ -8,7 +8,7 @@
       name="description"
       content="TriAudit is a controlled empirical audit of PGD adversarial training versus standard training on CIFAR-10, covering clean utility, white-box robustness, and confidence calibration."
     />
-    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="stylesheet" href="assets/css/styles.css?v=sidebar2" />
   </head>
   <body>
     <a class="skip-link" href="#abstract">Skip to content</a>
@@ -21,25 +21,27 @@
     </div>
     <div class="nav-backdrop" id="nav-backdrop" hidden></div>
 
-    <header class="site-nav" id="site-nav">
+    <aside class="site-nav" id="site-nav" aria-label="Section navigation">
       <div class="nav-inner">
         <a class="brand" href="#top">Tri<span>Audit</span></a>
-        <ul class="nav-links" id="site-menu">
-          <li><a href="#abstract">Abstract</a></li>
-          <li><a href="#overview">Overview</a></li>
-          <li><a href="#layers">Layers</a></li>
-          <li><a href="#methods">Methods</a></li>
-          <li><a href="#results">Results</a></li>
-          <li><a href="#utility">Utility</a></li>
-          <li><a href="#robustness">Robustness</a></li>
-          <li><a href="#calibration">Calibration</a></li>
-          <li><a href="#audit">Audit</a></li>
-          <li><a href="#compute">Compute</a></li>
-          <li><a href="#limits">Limits</a></li>
-          <li><a href="#reproduce">Reproduce</a></li>
-          <li><a href="#faq">Q&amp;A</a></li>
-          <li><a href="#references">References</a></li>
-        </ul>
+        <nav>
+          <ul class="nav-links" id="site-menu">
+            <li><a href="#abstract">Abstract</a></li>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#layers">Layers</a></li>
+            <li><a href="#methods">Methods</a></li>
+            <li><a href="#results">Results</a></li>
+            <li><a href="#utility">Utility</a></li>
+            <li><a href="#robustness">Robustness</a></li>
+            <li><a href="#calibration">Calibration</a></li>
+            <li><a href="#audit">Audit</a></li>
+            <li><a href="#compute">Compute</a></li>
+            <li><a href="#limits">Limits</a></li>
+            <li><a href="#reproduce">Reproduce</a></li>
+            <li><a href="#faq">Q&amp;A</a></li>
+            <li><a href="#references">References</a></li>
+          </ul>
+        </nav>
         <div class="nav-actions">
           <a
             class="nav-github"
@@ -50,8 +52,9 @@
           >
         </div>
       </div>
-    </header>
+    </aside>
 
+    <div class="page">
     <main id="top">
       <!-- HERO -->
       <section class="hero">
@@ -1065,6 +1068,7 @@ python scripts/prepare_data.py</code></pre>
         </div>
       </div>
     </footer>
+    </div>
 
     <script src="assets/js/main.js"></script>
   </body>
