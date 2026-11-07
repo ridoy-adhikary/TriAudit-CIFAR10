@@ -583,6 +583,23 @@ tr:last-child td {
   color: var(--muted);
 }
 
+.ref-list {
+  margin: 1.75rem 0 0;
+  padding-left: 1.35rem;
+  color: var(--ink-soft);
+}
+
+.ref-list li {
+  margin-bottom: 1.1rem;
+  padding-left: 0.35rem;
+  line-height: 1.55;
+}
+
+.ref-list a {
+  font-weight: 650;
+  white-space: nowrap;
+}
+
 /* ---------- Footer ---------- */
 .site-footer {
   border-top: 1px solid var(--line);

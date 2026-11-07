@@ -183,6 +183,28 @@ TriAudit/
 
 ---
 
+## References
+
+Related work that informed TriAudit’s focus on evaluation adequacy, clean–robust tradeoffs, and multi-axis reporting:
+
+1. S. Bai, H. Han, R. Yang, and Y. Cao, “Adaptive spatial–frequency guidance for transferable adversarial evaluation of robust visual classifiers,” *The Visual Computer*, vol. 42, p. 449, 2026. [https://doi.org/10.1007/s00371-026-04666-w](https://doi.org/10.1007/s00371-026-04666-w)
+
+2. R. Zhang, Y. Li, Z. Wan, J. Cao, J. Zhang, and S. Tang, “You Don’t Protect if You Don’t Expect: Breaking the Key Assumption behind CLIP’s Test Time Defenses.”
+
+3. A. Talluri, “AUTO-ART: Structured Literature Synthesis and Automated Adversarial Robustness Testing across Evaluation Protocols, Multi-Attack Threat Models, and LLM-Driven Breaking,” arXiv:2604.20704, 2026. [https://arxiv.org/abs/2604.20704](https://arxiv.org/abs/2604.20704)
+
+4. S. M. H. Mirsadeghi, “Active machine learning approach to adversarial training improves trade-off between natural accuracy and adversarial robustness.”
+
+5. A. D. M. Ibrahum and J.-E. Hong, “DP2O: Dual-Pair Direct Preference Optimization for Preference-Guided Adversarial Robustness in Vision Models,” *IEEE Access*, 2026. [https://doi.org/10.1109/ACCESS.2026.3701884](https://doi.org/10.1109/ACCESS.2026.3701884)
+
+6. M. Meymani and R. Razavi-Far, “Divided We Fall: Defending against adversarial attacks via soft-gated fractional mixture-of-experts with randomized adversarial training,” *Information Sciences*.
+
+7. N. Bunzel, “VanillaBench: The Hidden Accuracy Cost of Adversarial Robustness,” arXiv:2607.12545, 2026. [https://arxiv.org/abs/2607.12545](https://arxiv.org/abs/2607.12545)
+
+8. S. Saha, M. A. Pervaiz, M. S. Rahman, S. Ahmmed, and J. Maua, “Residual-guided hybrid framework for adversarially robust deep learning-based network intrusion detection,” *PLoS One*, vol. 21, no. 6, e0350737, 2026. [https://doi.org/10.1371/journal.pone.0350737](https://doi.org/10.1371/journal.pone.0350737)
+
+---
+
 ## Key artifacts
 
 | Artifact | Path |
