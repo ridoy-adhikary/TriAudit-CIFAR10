@@ -13,21 +13,17 @@
   <body>
     <a class="skip-link" href="#abstract">Skip to content</a>
 
-    <header class="site-nav">
+    <div class="mobile-topbar">
+      <a class="brand" href="#top">Tri<span>Audit</span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
+    </div>
+    <div class="nav-backdrop" id="nav-backdrop" hidden></div>
+
+    <header class="site-nav" id="site-nav">
       <div class="nav-inner">
         <a class="brand" href="#top">Tri<span>Audit</span></a>
-        <div class="nav-actions">
-          <a
-            class="nav-github"
-            href="https://github.com/ridoy-adhikary/TriAudit-CIFAR10"
-            target="_blank"
-            rel="noopener noreferrer"
-            >GitHub</a
-          >
-          <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu">
-            Menu
-          </button>
-        </div>
         <ul class="nav-links" id="site-menu">
           <li><a href="#abstract">Abstract</a></li>
           <li><a href="#overview">Overview</a></li>
@@ -42,15 +38,16 @@
           <li><a href="#limits">Limits</a></li>
           <li><a href="#reproduce">Reproduce</a></li>
           <li><a href="#references">References</a></li>
-          <li>
-            <a
-              href="https://github.com/ridoy-adhikary/TriAudit-CIFAR10"
-              target="_blank"
-              rel="noopener noreferrer"
-              >GitHub ↗</a
-            >
-          </li>
         </ul>
+        <div class="nav-actions">
+          <a
+            class="nav-github"
+            href="https://github.com/ridoy-adhikary/TriAudit-CIFAR10"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+        </div>
       </div>
     </header>
 
