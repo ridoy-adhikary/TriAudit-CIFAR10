@@ -37,6 +37,7 @@
           <li><a href="#compute">Compute</a></li>
           <li><a href="#limits">Limits</a></li>
           <li><a href="#reproduce">Reproduce</a></li>
+          <li><a href="#faq">Q&amp;A</a></li>
           <li><a href="#references">References</a></li>
         </ul>
         <div class="nav-actions">
@@ -859,10 +860,124 @@ python scripts/prepare_data.py</code></pre>
         </div>
       </section>
 
+      <!-- FAQ -->
+      <section id="faq">
+        <div class="wrap reveal">
+          <p class="section-kicker">13 - Q&amp;A</p>
+          <h2>Frequently asked questions</h2>
+          <p class="lede">
+            Short answers to common questions about TriAudit’s scope, metrics, results, and how to
+            read the audit status.
+          </p>
+
+          <div class="faq-list">
+            <details class="faq-item">
+              <summary>What is TriAudit in one sentence?</summary>
+              <p>
+                TriAudit is a controlled empirical audit that compares seed-matched standard
+                training (ST) and PGD adversarial training (PGD-AT) on CIFAR-10 ResNet-18 across
+                clean utility, white-box robustness / attack adequacy, and confidence calibration.
+              </p>
+            </details>
+
+            <details class="faq-item">
+              <summary>Is a model with zero TriAudit flags safe to deploy?</summary>
+              <p>
+                No. Zero flags only means no layer crossed its project-defined threshold under the
+                tested threat model. TriAudit is an empirical report, not a deployment certificate
+                or safety approval.
+              </p>
+            </details>
+
+            <details class="faq-item">
+              <summary>What does each audit layer check?</summary>
+              <p>
+                <strong>Layer 1 (clean utility)</strong> flags if AT loses more than 5 percentage
+                points of clean accuracy versus ST.
+                <strong>Layer 2 (attack adequacy)</strong> flags if PGD-20 looks much stronger than
+                multi-restart PGD (AttackGap &gt; 5 pp).
+                <strong>Layer 3 (calibration)</strong> flags if any evaluated ECE on clean / FGSM /
+                PGD-20 exceeds 0.15.
+              </p>
+            </details>
+
+            <details class="faq-item">
+              <summary>What were the main findings?</summary>
+              <p>
+                Across three seeds, PGD-AT reached about 48.4% PGD-20 robust accuracy at
+                ε = 8/255, but paid roughly −11.8 pp clean accuracy versus ST (Layer 1 flagged
+                every seed). AttackGap stayed small (Layer 2 clear). PGD-20 ECE triggered Layer 3
+                on seeds 0 and 2, giving statuses Major concerns / Caveat / Major concerns.
+              </p>
+            </details>
+
+            <details class="faq-item">
+              <summary>Why are ST and AT epoch counts different?</summary>
+              <p>
+                In this release, ST used 100 epochs and PGD-AT used 50 epochs for AT compute
+                control. Outer optimizer settings are otherwise matched and seeds share
+                initialization. The clean gap should be read as an audit signal under that
+                protocol, not as a universal “AT tax” for every training budget.
+              </p>
+            </details>
+
+            <details class="faq-item">
+              <summary>Which threat model does TriAudit cover?</summary>
+              <p>
+                White-box, untargeted, ℓ∞ attacks. Primary budget is ε = 8/255, with sensitivity
+                checks at 4/255 and 12/255. Attacks include FGSM, PGD-20, and multi-restart PGD.
+                Black-box attacks, common corruptions, and other norms are outside the primary
+                claim.
+              </p>
+            </details>
+
+            <details class="faq-item">
+              <summary>Are the alert thresholds standard community rules?</summary>
+              <p>
+                No. The −5 pp clean gap, 5 pp AttackGap, and 0.15 ECE cutoffs are
+                <strong>project-defined</strong> so TriAudit can report consistently. Other papers
+                may use different conventions.
+              </p>
+            </details>
+
+            <details class="faq-item">
+              <summary>Why aren’t model checkpoints on GitHub?</summary>
+              <p>
+                Each <code>*.pt</code> file is about 43 MB, and the full checkpoint set is hundreds
+                of megabytes. The public repo keeps code, configs, metrics JSON, figures, and this
+                site. CIFAR-10 raw data is also gitignored (~340 MB) and downloaded locally via
+                <code>scripts/prepare_data.py</code>.
+              </p>
+            </details>
+
+            <details class="faq-item">
+              <summary>What hardware did the experiments use?</summary>
+              <p>
+                Runs used an NVIDIA RTX A4000 GPU on shared server <code>scdx-X299-WU8</code> with
+                the <code>ridoy</code> conda environment (PyTorch 2.7.1+cu118). Paired training took
+                about 6.2 hours; full attack evaluation about 1.2 hours; phases 0–9 about 7.5–8
+                hours end-to-end.
+              </p>
+            </details>
+
+            <details class="faq-item">
+              <summary>How can I reproduce or regenerate figures?</summary>
+              <p>
+                Install the package, download CIFAR-10, then run phased scripts with
+                <code>python scripts/auto/run_phase.py --phase N</code>. To rebuild presentation
+                figures from logged metrics:
+                <code>PYTHONPATH=src python scripts/make_report_figures.py</code>.
+                Reliability diagrams need local GPU checkpoints.
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+
       <!-- REFERENCES -->
       <section id="references">
         <div class="wrap reveal">
-          <p class="section-kicker">13 - References</p>
+          <p class="section-kicker">14 - References</p>
           <h2>Related literature</h2>
           <p class="lede">
             These works informed TriAudit’s emphasis on evaluation adequacy, the clean–robust
