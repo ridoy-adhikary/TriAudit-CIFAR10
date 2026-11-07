@@ -22,6 +22,92 @@ TriAudit answers three questions at once for a seed-matched CIFAR ResNet-18 pair
 <p align="center"><em>Methods pipeline — paired seeds, attacks, calibration, and audit status.</em></p>
 
 ---
+## Architecture flowchart (Mermaid)
+
+### End-to-end data flow
+
+```mermaid
+flowchart TD
+  subgraph DATA["1. Data"]
+    CIFAR["CIFAR-10 official<br/>50k train + 10k test"]
+    SPLIT["Deterministic split<br/>45k train / 5k val<br/>test held out"]
+    CIFAR --> SPLIT
+  end
+
+  subgraph PRE["2. Shared preprocessing"]
+    PREP["ToTensor [0,1]<br/>shared augment train<br/>deterministic eval"]
+    SPLIT --> PREP
+  end
+
+  subgraph TRAIN["3. Paired training by seed s"]
+    ST["ST branch<br/>SGD m=0.9 wd=5e-4<br/>CE on clean"]
+    AT["PGD-AT branch<br/>PGD-10 inner max<br/>eps=8/255 a=2/255<br/>random start + clip"]
+    PREP --> ST
+    PREP --> AT
+  end
+
+  subgraph CKPT["4. Checkpoint selection and freeze"]
+    STCK["Select ST checkpoint<br/>via val; freeze"]
+    ATCK["Select PGD-AT checkpoint<br/>via val; freeze"]
+    ST --> STCK
+    AT --> ATCK
+  end
+
+  subgraph EVAL["5. Shared evaluation harness<br/>frozen models only"]
+    CLEAN["Clean evaluation<br/>test-set accuracy"]
+    FGSM["FGSM"]
+    PGD20["PGD-20"]
+    MRPGD["Multi-restart PGD<br/>50 steps / 10 restarts"]
+    AA["Optional AutoAttack"]
+    CAL["Calibration<br/>ECE-15 / NLL / Brier<br/>clean + FGSM + PGD-20"]
+    STCK --> CLEAN
+    ATCK --> CLEAN
+    STCK --> FGSM
+    ATCK --> FGSM
+    STCK --> PGD20
+    ATCK --> PGD20
+    STCK --> MRPGD
+    ATCK --> MRPGD
+    STCK -.-> AA
+    ATCK -.-> AA
+    STCK --> CAL
+    ATCK --> CAL
+    FGSM --> CAL
+    PGD20 --> CAL
+  end
+
+  subgraph AUDIT["6. Three audit layers"]
+    L1["Layer 1<br/>Clean Utility Gap<br/>Δ_clean"]
+    L2["Layer 2<br/>AttackGap + robust acc"]
+    L3["Layer 3<br/>ECE / NLL / Brier"]
+    CLEAN --> L1
+    PGD20 --> L2
+    MRPGD --> L2
+    AA -.-> L2
+    CAL --> L3
+  end
+
+  subgraph AGG["7. Aggregation"]
+    FLAGS["Count project-defined flags<br/>missing ≠ pass"]
+    STATUS["TriAudit Audit Status"]
+    L1 --> FLAGS
+    L2 --> FLAGS
+    L3 --> FLAGS
+    FLAGS --> STATUS
+  end
+
+  subgraph OUT["8. Research outputs"]
+    TABLES["Metric tables<br/>mean ± std"]
+    FIGS["Figures / reliability diagrams"]
+    REPORT["Research report<br/>+ claim boundaries"]
+    STATUS --> TABLES
+    STATUS --> FIGS
+    STATUS --> REPORT
+  end
+
+  classDef optional stroke-dasharray: 5 5
+  class AA optional
+```
 
 ## Headline results
 
