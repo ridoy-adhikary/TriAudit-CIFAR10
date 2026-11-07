@@ -156,6 +156,34 @@ a:hover {
   transform: scaleX(1);
 }
 
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.nav-github {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--ink);
+  color: #f4f7f5;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.nav-github:hover {
+  background: var(--teal-deep);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
 .nav-toggle {
   display: none;
   border: 1px solid var(--line);
@@ -610,6 +638,10 @@ pre code {
 
   .metric-row {
     grid-template-columns: 1fr;
+  }
+
+  .nav-github {
+    display: none;
   }
 
   .nav-toggle {
