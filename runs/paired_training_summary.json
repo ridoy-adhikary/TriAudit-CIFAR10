@@ -1,0 +1,29 @@
+{
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "st_epochs": 100,
+  "at_epochs": 50,
+  "runs": {
+    "0": {
+      "st": "/home/sda/Users/temp_user/Ridoy/Other_Projects/TriAudit/runs/seed0/st/checkpoint.pt",
+      "st_best_val": 94.48,
+      "at": "/home/sda/Users/temp_user/Ridoy/Other_Projects/TriAudit/runs/seed0/pgd_at/checkpoint.pt",
+      "at_best_val": 82.44
+    },
+    "1": {
+      "st": "/home/sda/Users/temp_user/Ridoy/Other_Projects/TriAudit/runs/seed1/st/checkpoint.pt",
+      "st_best_val": 94.46,
+      "at": "/home/sda/Users/temp_user/Ridoy/Other_Projects/TriAudit/runs/seed1/pgd_at/checkpoint.pt",
+      "at_best_val": 82.12
+    },
+    "2": {
+      "st": "/home/sda/Users/temp_user/Ridoy/Other_Projects/TriAudit/runs/seed2/st/checkpoint.pt",
+      "st_best_val": 94.18,
+      "at": "/home/sda/Users/temp_user/Ridoy/Other_Projects/TriAudit/runs/seed2/pgd_at/checkpoint.pt",
+      "at_best_val": 81.52
+    }
+  }
+}

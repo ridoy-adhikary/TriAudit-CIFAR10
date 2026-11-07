@@ -1,0 +1,10 @@
+# TriAudit core dependencies
+# Install PyTorch for your CUDA/CPU setup from https://pytorch.org if needed.
+torch>=2.1
+torchvision>=0.16
+numpy>=1.24
+matplotlib>=3.7
+PyYAML>=6.0
+Pillow>=10.0
+tqdm>=4.66
+scipy>=1.10

@@ -1,0 +1,100 @@
+{
+  "updated_at": "2026-11-02T07:04:46",
+  "current_phase": 9,
+  "status": "phase_verified",
+  "env": "ridoy",
+  "python": "/home/sda/Users/temp_user/.conda/envs/ridoy/bin/python",
+  "data_root": "dataset",
+  "phases": {
+    "0": {
+      "name": "architecture_verify",
+      "status": "verified",
+      "verified": true,
+      "gate_file": "phase0_architecture_verify.json",
+      "started_at": "2026-11-01T23:25:37",
+      "finished_at": "2026-11-01T23:25:37",
+      "notes": ""
+    },
+    "1": {
+      "name": "dataset_model_setup",
+      "status": "verified",
+      "verified": true,
+      "gate_file": "phase1_verify.json",
+      "started_at": "2026-11-01T23:25:37",
+      "finished_at": "2026-11-01T23:25:42",
+      "notes": ""
+    },
+    "2": {
+      "name": "st_pilot",
+      "status": "verified",
+      "verified": true,
+      "gate_file": "phase2_verify.json",
+      "started_at": "2026-11-01T23:32:52",
+      "finished_at": "2026-11-01T23:35:45",
+      "notes": "reset after GPU confirmed"
+    },
+    "3": {
+      "name": "pgd_at_pilot",
+      "status": "verified",
+      "verified": true,
+      "gate_file": "phase3_verify.json",
+      "started_at": "2026-11-01T23:35:45",
+      "finished_at": "2026-11-01T23:41:43",
+      "notes": ""
+    },
+    "4": {
+      "name": "paired_training",
+      "status": "verified",
+      "verified": true,
+      "gate_file": "phase4_verify.json",
+      "started_at": "2026-11-01T23:41:43",
+      "finished_at": "2026-11-02T05:53:17",
+      "notes": ""
+    },
+    "5": {
+      "name": "attack_evaluation",
+      "status": "verified",
+      "verified": true,
+      "gate_file": "phase5_verify.json",
+      "started_at": "2026-11-02T05:53:17",
+      "finished_at": "2026-11-02T07:04:39",
+      "notes": ""
+    },
+    "6": {
+      "name": "calibration_evaluation",
+      "status": "verified",
+      "verified": true,
+      "gate_file": "phase6_verify.json",
+      "started_at": "2026-11-02T07:04:39",
+      "finished_at": "2026-11-02T07:04:41",
+      "notes": ""
+    },
+    "7": {
+      "name": "audit_aggregation",
+      "status": "verified",
+      "verified": true,
+      "gate_file": "phase7_verify.json",
+      "started_at": "2026-11-02T07:04:41",
+      "finished_at": "2026-11-02T07:04:42",
+      "notes": ""
+    },
+    "8": {
+      "name": "stats_visualization",
+      "status": "verified",
+      "verified": true,
+      "gate_file": "phase8_verify.json",
+      "started_at": "2026-11-02T07:04:42",
+      "finished_at": "2026-11-02T07:04:44",
+      "notes": ""
+    },
+    "9": {
+      "name": "research_report",
+      "status": "verified",
+      "verified": true,
+      "gate_file": "phase9_verify.json",
+      "started_at": "2026-11-02T07:04:45",
+      "finished_at": "2026-11-02T07:04:46",
+      "notes": ""
+    }
+  }
+}

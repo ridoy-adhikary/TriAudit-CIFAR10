@@ -1,0 +1,18 @@
+optimizer: sgd
+momentum: 0.9
+weight_decay: 5.0e-4
+lr: 0.1
+epochs: 50
+scheduler: multistep
+milestones: [25, 40]
+gamma: 0.1
+batch_size: 128
+attack:
+  name: pgd
+  steps: 10
+  eps: 0.03137254901960784
+  step_size: 0.00784313725490196
+  random_start: true
+  clip_min: 0.0
+  clip_max: 1.0
+# Locked after Phase-3 PGD-AT pilot. Full paired AT uses 50 epochs (AT cost).

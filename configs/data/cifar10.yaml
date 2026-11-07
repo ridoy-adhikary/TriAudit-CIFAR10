@@ -1,0 +1,9 @@
+dataset: CIFAR-10
+root: dataset/raw
+splits_file: dataset/splits/cifar10_45k5k_seed42.json
+num_classes: 10
+batch_size: 128
+num_workers: 4
+normalize:
+  mean: [0.4914, 0.4822, 0.4465]
+  std: [0.2470, 0.2435, 0.2616]

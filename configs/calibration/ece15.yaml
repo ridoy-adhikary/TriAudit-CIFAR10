@@ -1,0 +1,4 @@
+ece_bins: 15
+binning: equal_width
+metrics: [ece, nll, brier]
+conditions: [clean, fgsm, pgd20]

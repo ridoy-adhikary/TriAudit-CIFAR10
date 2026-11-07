@@ -1,0 +1,117 @@
+{
+  "clean_acc": 82.16,
+  "clean_calibration": {
+    "ece": 0.10046122968196869,
+    "nll": 0.5748750567436218,
+    "brier": 0.277840793132782,
+    "n": 10000,
+    "ece_bins": 15
+  },
+  "by_eps": {
+    "0.01568627450980392": {
+      "fgsm": {
+        "attack": "fgsm",
+        "eps": 0.01568627450980392,
+        "robust_acc": 68.48,
+        "n": 10000,
+        "constraint_violating_batches": 0,
+        "calibration": {
+          "ece": 0.030142666772007942,
+          "nll": 0.8778138756752014,
+          "brier": 0.42367246747016907,
+          "n": 10000,
+          "ece_bins": 15
+        }
+      },
+      "pgd20": {
+        "attack": "pgd20",
+        "eps": 0.01568627450980392,
+        "robust_acc": 66.94,
+        "n": 10000,
+        "constraint_violating_batches": 0,
+        "calibration": {
+          "ece": 0.024642957374453545,
+          "nll": 0.9048615097999573,
+          "brier": 0.4377509653568268,
+          "n": 10000,
+          "ece_bins": 15
+        }
+      }
+    },
+    "0.03137254901960784": {
+      "fgsm": {
+        "attack": "fgsm",
+        "eps": 0.03137254901960784,
+        "robust_acc": 55.06,
+        "n": 10000,
+        "constraint_violating_batches": 0,
+        "calibration": {
+          "ece": 0.08097626268863678,
+          "nll": 1.2470669746398926,
+          "brier": 0.5804662704467773,
+          "n": 10000,
+          "ece_bins": 15
+        }
+      },
+      "pgd20": {
+        "attack": "pgd20",
+        "eps": 0.03137254901960784,
+        "robust_acc": 48.36,
+        "n": 10000,
+        "constraint_violating_batches": 0,
+        "calibration": {
+          "ece": 0.15570448338985443,
+          "nll": 1.4480918645858765,
+          "brier": 0.6680451035499573,
+          "n": 10000,
+          "ece_bins": 15
+        }
+      },
+      "mr_pgd": {
+        "attack": "mr_pgd",
+        "eps": 0.03137254901960784,
+        "robust_acc": 48.046875,
+        "n": 5120,
+        "constraint_violating_batches": 0,
+        "calibration": {
+          "ece": 0.16583772003650665,
+          "nll": 1.466349720954895,
+          "brier": 0.6764926910400391,
+          "n": 5120,
+          "ece_bins": 15
+        }
+      },
+      "attack_gap": 0.31312499999999943
+    },
+    "0.047058823529411764": {
+      "fgsm": {
+        "attack": "fgsm",
+        "eps": 0.047058823529411764,
+        "robust_acc": 43.73,
+        "n": 10000,
+        "constraint_violating_batches": 0,
+        "calibration": {
+          "ece": 0.1732732206583023,
+          "nll": 1.6374709606170654,
+          "brier": 0.7234649062156677,
+          "n": 10000,
+          "ece_bins": 15
+        }
+      },
+      "pgd20": {
+        "attack": "pgd20",
+        "eps": 0.047058823529411764,
+        "robust_acc": 30.7,
+        "n": 10000,
+        "constraint_violating_batches": 0,
+        "calibration": {
+          "ece": 0.3429502248764038,
+          "nll": 2.285653829574585,
+          "brier": 0.944260835647583,
+          "n": 10000,
+          "ece_bins": 15
+        }
+      }
+    }
+  }
+}

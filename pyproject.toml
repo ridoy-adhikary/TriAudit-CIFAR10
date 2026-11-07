@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "triaudit"
+version = "0.1.0"
+description = "Controlled empirical audit of PGD adversarial training on CIFAR-10"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "torch>=2.1",
+  "torchvision>=0.16",
+  "numpy>=1.24",
+  "matplotlib>=3.7",
+  "PyYAML>=6.0",
+  "Pillow>=10.0",
+  "tqdm>=4.66",
+  "scipy>=1.10",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

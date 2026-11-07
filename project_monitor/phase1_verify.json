@@ -1,0 +1,49 @@
+{
+  "phase": 1,
+  "name": "dataset_model_setup",
+  "timestamp": "2026-11-01T23:25:41",
+  "passed": true,
+  "checks": [
+    {
+      "check": "split_file",
+      "pass": true
+    },
+    {
+      "check": "split_sizes",
+      "pass": true
+    },
+    {
+      "check": "split_disjoint",
+      "pass": true
+    },
+    {
+      "check": "model_module",
+      "pass": true
+    },
+    {
+      "check": "forward_shape",
+      "pass": true,
+      "detail": "(4, 10)"
+    },
+    {
+      "check": "configs/data/cifar10.yaml",
+      "pass": true
+    },
+    {
+      "check": "configs/model/resnet18_cifar.yaml",
+      "pass": true
+    },
+    {
+      "check": "configs/train/st.yaml",
+      "pass": true
+    },
+    {
+      "check": "configs/train/pgd_at.yaml",
+      "pass": true
+    },
+    {
+      "check": "src/triaudit/data/cifar10.py",
+      "pass": true
+    }
+  ]
+}

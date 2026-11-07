@@ -1,0 +1,10 @@
+optimizer: sgd
+momentum: 0.9
+weight_decay: 5.0e-4
+lr: 0.1
+epochs: 100
+scheduler: multistep
+milestones: [50, 75]
+gamma: 0.1
+batch_size: 128
+# Locked after Phase-2 ST pilot (loss decreased; checkpoint saved).

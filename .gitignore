@@ -1,0 +1,65 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# --- Virtual envs ---
+.venv/
+venv/
+env/
+
+# --- IDE / local agent ---
+.cursor/
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- Matplotlib / caches ---
+.matplotlib/
+*.mplstyle.bak
+
+# --- Secrets / local env ---
+.env
+.env.*
+!.env.example
+
+# --- Dataset binaries (CIFAR-10 download cache) ---
+dataset/raw/**
+!dataset/raw/.gitkeep
+!dataset/raw/.gitignore
+
+# --- Model checkpoints (large; keep metrics JSON) ---
+*.pt
+*.pth
+*.ckpt
+*.onnx
+
+# --- Training / orchestrator runtime noise ---
+project_monitor/*.log
+project_monitor/*.pid
+project_monitor/*.out
+project_monitor/orchestrator.status
+project_monitor/orchestrator.nohup.out
+project_monitor/code_changes.log
+project_monitor/project_activity.log
+project_monitor/orchestrator.log
+
+# --- Optional local scratch ---
+tmp/
+scratch/
+*.tmp

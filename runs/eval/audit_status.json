@@ -1,0 +1,126 @@
+{
+  "seeds": {
+    "0": {
+      "layer1": {
+        "delta_clean": -11.329999999999998,
+        "flag": true,
+        "threshold": -5.0
+      },
+      "layer2": {
+        "attack_gap": 0.00390625,
+        "flag": false,
+        "threshold": 5.0
+      },
+      "layer3": {
+        "ece_by_condition": {
+          "clean": 0.09072872996330261,
+          "fgsm": 0.09009166061878204,
+          "pgd20": 0.17065085470676422
+        },
+        "flag": true,
+        "triggered_conditions": [
+          "pgd20"
+        ],
+        "threshold": 0.15
+      },
+      "triaudit_audit_status": {
+        "n_flags": 2,
+        "status": "Major concerns",
+        "unevaluated_layers": [],
+        "note": "Zero flags does not mean safe to deploy."
+      },
+      "measurements": {
+        "clean_st": 94.03,
+        "clean_at": 82.7,
+        "pgd20_at": 48.5,
+        "mr_at": 48.49609375,
+        "ece": {
+          "clean": 0.09072872996330261,
+          "fgsm": 0.09009166061878204,
+          "pgd20": 0.17065085470676422
+        }
+      }
+    },
+    "1": {
+      "layer1": {
+        "delta_clean": -12.320000000000007,
+        "flag": true,
+        "threshold": -5.0
+      },
+      "layer2": {
+        "attack_gap": 0.24453125000000142,
+        "flag": false,
+        "threshold": 5.0
+      },
+      "layer3": {
+        "ece_by_condition": {
+          "clean": 0.10398115962743759,
+          "fgsm": 0.07701993733644485,
+          "pgd20": 0.14793436229228973
+        },
+        "flag": false,
+        "triggered_conditions": [],
+        "threshold": 0.15
+      },
+      "triaudit_audit_status": {
+        "n_flags": 1,
+        "status": "Caveat",
+        "unevaluated_layers": [],
+        "note": "Zero flags does not mean safe to deploy."
+      },
+      "measurements": {
+        "clean_st": 94.29,
+        "clean_at": 81.97,
+        "pgd20_at": 48.35,
+        "mr_at": 48.10546875,
+        "ece": {
+          "clean": 0.10398115962743759,
+          "fgsm": 0.07701993733644485,
+          "pgd20": 0.14793436229228973
+        }
+      }
+    },
+    "2": {
+      "layer1": {
+        "delta_clean": -11.670000000000002,
+        "flag": true,
+        "threshold": -5.0
+      },
+      "layer2": {
+        "attack_gap": 0.31312499999999943,
+        "flag": false,
+        "threshold": 5.0
+      },
+      "layer3": {
+        "ece_by_condition": {
+          "clean": 0.10046122968196869,
+          "fgsm": 0.08097626268863678,
+          "pgd20": 0.15570448338985443
+        },
+        "flag": true,
+        "triggered_conditions": [
+          "pgd20"
+        ],
+        "threshold": 0.15
+      },
+      "triaudit_audit_status": {
+        "n_flags": 2,
+        "status": "Major concerns",
+        "unevaluated_layers": [],
+        "note": "Zero flags does not mean safe to deploy."
+      },
+      "measurements": {
+        "clean_st": 93.83,
+        "clean_at": 82.16,
+        "pgd20_at": 48.36,
+        "mr_at": 48.046875,
+        "ece": {
+          "clean": 0.10046122968196869,
+          "fgsm": 0.08097626268863678,
+          "pgd20": 0.15570448338985443
+        }
+      }
+    }
+  },
+  "note": "Zero flags != safe to deploy"
+}

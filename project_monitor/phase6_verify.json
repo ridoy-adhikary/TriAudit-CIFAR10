@@ -1,0 +1,13 @@
+{
+  "phase": 6,
+  "name": "phase6",
+  "timestamp": "2026-11-02T07:04:41",
+  "passed": true,
+  "checks": [
+    {
+      "check": "runs/eval/calibration_summary.json",
+      "pass": true
+    }
+  ],
+  "note": "Fails closed until architecture acceptance artifacts exist"
+}

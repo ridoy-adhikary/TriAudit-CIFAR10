@@ -1,0 +1,31 @@
+{
+  "figures": [
+    "reports/figures/attack_adequacy.png",
+    "reports/figures/audit_status_overview.png",
+    "reports/figures/calibration_panels.png",
+    "reports/figures/clean_accuracy_tradeoff.png",
+    "reports/figures/clean_vs_robust_tradeoff.png",
+    "reports/figures/methods_pipeline.png",
+    "reports/figures/reliability_diagrams_seed0.png",
+    "reports/figures/robust_acc_vs_eps.png",
+    "reports/figures/summary_bars.png"
+  ],
+  "source_artifacts": [
+    "runs/eval/attacks_summary.json",
+    "runs/eval/calibration_summary.json",
+    "runs/eval/audit_status.json",
+    "runs/seed0/*/checkpoint.pt (reliability only)"
+  ],
+  "note": "Numeric plots from logged runs/; reliability diagrams recomputed from seed0 frozen checkpoints.",
+  "slide_order_suggestion": [
+    "methods_pipeline.png",
+    "summary_bars.png",
+    "clean_accuracy_tradeoff.png",
+    "robust_acc_vs_eps.png",
+    "attack_adequacy.png",
+    "clean_vs_robust_tradeoff.png",
+    "calibration_panels.png",
+    "reliability_diagrams_seed0.png",
+    "audit_status_overview.png"
+  ]
+}
