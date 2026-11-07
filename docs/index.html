@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TriAudit — PGD-AT Audit on CIFAR-10</title>
+    <meta
+      name="description"
+      content="TriAudit is a controlled empirical audit of PGD adversarial training versus standard training on CIFAR-10, covering clean utility, white-box robustness, and confidence calibration."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#overview">Skip to content</a>
+
+    <header class="site-nav">
+      <div class="nav-inner">
+        <a class="brand" href="#top">Tri<span>Audit</span></a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu">
+          Menu
+        </button>
+        <ul class="nav-links" id="site-menu">
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#layers">Layers</a></li>
+          <li><a href="#methods">Methods</a></li>
+          <li><a href="#results">Results</a></li>
+          <li><a href="#utility">Utility</a></li>
+          <li><a href="#robustness">Robustness</a></li>
+          <li><a href="#calibration">Calibration</a></li>
+          <li><a href="#audit">Audit</a></li>
+          <li><a href="#limits">Limits</a></li>
+          <li><a href="#reproduce">Reproduce</a></li>
+        </ul>
+      </div>
+    </header>
+
+    <main id="top">
+      <!-- HERO -->
+      <section class="hero">
+        <div class="wrap hero-grid">
+          <div class="reveal">
+            <p class="section-kicker">Empirical robustness report</p>
+            <h1 class="hero-brand">Tri<em>Audit</em></h1>
+            <p>
+              A controlled audit of <strong>PGD adversarial training</strong> against
+              seed-matched <strong>standard training</strong> on CIFAR-10. One model family,
+              three questions: clean utility, white-box robustness, and confidence calibration.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#results">See headline results</a>
+              <a class="btn btn-ghost" href="#methods">Read the method</a>
+            </div>
+          </div>
+          <div class="hero-visual reveal">
+            <img
+              src="assets/figures/methods_pipeline.png"
+              alt="TriAudit methods pipeline from paired training to audit status"
+            />
+            <p class="hero-note">
+              End-to-end pipeline: paired seeds → attacks → calibration → TriAudit status.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- OVERVIEW -->
+      <section id="overview">
+        <div class="wrap reveal">
+          <p class="section-kicker">01 — Overview</p>
+          <h2>What this project asks</h2>
+          <p class="lede">
+            Adversarial training is often sold as a robustness upgrade. TriAudit checks what
+            that upgrade actually costs and whether the evaluation is trustworthy enough to
+            support a claim.
+          </p>
+
+          <div class="split" style="margin-top: 2rem">
+            <div class="prose">
+              <p>
+                The study compares a CIFAR-adapted <strong>ResNet-18</strong> trained with
+                standard cross-entropy against the same architecture trained with
+                <strong>PGD-AT</strong> (PGD-10 inside the training loop). Both conditions share
+                initialization and are repeated across seeds <code>{0, 1, 2}</code>.
+              </p>
+              <p>
+                Evaluation is deliberately scoped: white-box, untargeted, ℓ∞ perturbations with
+                primary budget <code>ε = 8/255</code>, plus sensitivity checks at
+                <code>4/255</code> and <code>12/255</code>.
+              </p>
+            </div>
+            <div class="prose">
+              <p>
+                TriAudit is <strong>not</strong> a deployment certificate. Passing every layer
+                only means “no flags under the tested scope.” Missing metrics never count as a
+                pass, and zero flags never means the model is safe to ship.
+              </p>
+              <div class="tag-row">
+                <span class="tag">CIFAR-10</span>
+                <span class="tag">ResNet-18</span>
+                <span class="tag">PGD-AT vs ST</span>
+                <span class="tag">White-box ℓ∞</span>
+                <span class="tag">3 paired seeds</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout">
+            <strong>Claim boundary</strong>
+            Alert thresholds are project-defined for this audit. They are useful for consistent
+            reporting, not universal community standards.
+          </div>
+        </div>
+      </section>
+
+      <!-- LAYERS -->
+      <section id="layers">
+        <div class="wrap reveal">
+          <p class="section-kicker">02 — Audit layers</p>
+          <h2>Three layers, one status</h2>
+          <p class="lede">
+            Each layer asks a distinct question. Flags accumulate into a TriAudit status label
+            from “No flags” to “Critical concerns.”
+          </p>
+
+          <div class="layer-list">
+            <article class="layer">
+              <div class="layer-num">1</div>
+              <div>
+                <h3>Clean utility</h3>
+                <p>
+                  Does PGD-AT sacrifice too much clean accuracy versus the seed-matched ST model?
+                  Flag if <code>Δ_clean = Acc(AT) − Acc(ST) &lt; −5</code> percentage points.
+                </p>
+              </div>
+            </article>
+            <article class="layer">
+              <div class="layer-num">2</div>
+              <div>
+                <h3>Attack adequacy</h3>
+                <p>
+                  Is the white-box evaluation strong enough? Compare PGD-20 robust accuracy to
+                  multi-restart PGD. Flag if
+                  <code>AttackGap = Rob(PGD-20) − Rob(MR-PGD) &gt; 5</code> pp — a large gap
+                  suggests the reported robustness may be optimistic.
+                </p>
+              </div>
+            </article>
+            <article class="layer">
+              <div class="layer-num">3</div>
+              <div>
+                <h3>Confidence calibration</h3>
+                <p>
+                  Are predicted confidences reliable on clean and attacked inputs? Compute ECE
+                  (15 equal-width bins), NLL, and multiclass Brier on clean / FGSM / PGD-20.
+                  Flag if any evaluated ECE exceeds <code>0.15</code>.
+                </p>
+              </div>
+            </article>
+          </div>
+
+          <div class="table-wrap" style="margin-top: 2rem">
+            <table>
+              <thead>
+                <tr>
+                  <th>Flags</th>
+                  <th>Status label</th>
+                  <th>Interpretation</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>0</td>
+                  <td>No flags under tested scope</td>
+                  <td>No layer crossed its threshold — still not a safety certificate.</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td class="status-caveat">Caveat</td>
+                  <td>One concern worth reporting alongside any robustness claim.</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td class="status-major">Major concerns</td>
+                  <td>Multiple issues; robustness narrative needs strong caveats.</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td class="status-major">Critical concerns</td>
+                  <td>All layers flagged; claims should be heavily qualified.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- METHODS -->
+      <section id="methods">
+        <div class="wrap reveal">
+          <p class="section-kicker">03 — Methods</p>
+          <h2>How the comparison was controlled</h2>
+          <p class="lede">
+            The design goal is a fair paired contrast, not the strongest possible adversarial
+            defense on every leaderboard.
+          </p>
+
+          <div class="split" style="margin-top: 2rem">
+            <div class="prose">
+              <h3>Data & model</h3>
+              <ul>
+                <li>CIFAR-10 with a persisted <strong>45k / 5k</strong> train/val split (seed 42).</li>
+                <li>Official 10k test set held out until final evaluation.</li>
+                <li>Images kept in <code>[0, 1]</code>; normalization lives inside the model so attacks clip in pixel space.</li>
+                <li>CIFAR-adapted ResNet-18: 3×3 stem, no max-pool, 10-class head.</li>
+              </ul>
+
+              <h3>Training conditions</h3>
+              <ul>
+                <li><strong>ST:</strong> clean cross-entropy, SGD, MultiStepLR.</li>
+                <li><strong>PGD-AT:</strong> same outer optimizer family; inner PGD-10 with ε=<code>8/255</code>, α=<code>2/255</code>, random start.</li>
+                <li>Seeds <code>{0,1,2}</code> with <strong>shared initialization</strong> copied into both arms.</li>
+                <li>Default budgets in this release: ST 100 epochs, AT 50 epochs (AT compute control).</li>
+              </ul>
+            </div>
+            <div class="prose">
+              <h3>Evaluation suite</h3>
+              <ul>
+                <li>Clean accuracy on the official test set.</li>
+                <li>FGSM and PGD-20 across ε ∈ {4, 8, 12}/255.</li>
+                <li>Multi-restart PGD at primary ε (50 steps × 10 restarts).</li>
+                <li>Calibration bundle: ECE-15, NLL, multiclass Brier on clean / FGSM / PGD-20.</li>
+                <li>Per-batch ℓ∞ and box constraint checks during attack generation.</li>
+              </ul>
+
+              <figure class="figure">
+                <img
+                  src="assets/figures/methods_pipeline.png"
+                  alt="Detailed view of the TriAudit experimental pipeline"
+                />
+                <figcaption>
+                  Figure — Experimental flow from dataset split through audit aggregation.
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RESULTS -->
+      <section id="results">
+        <div class="wrap reveal">
+          <p class="section-kicker">04 — Headline results</p>
+          <h2>What the three seeds show</h2>
+          <p class="lede">
+            Across seeds, PGD-AT improves white-box robust accuracy but pays a large clean-accuracy
+            cost. Attack adequacy looks healthy; calibration on PGD-20 inputs is the secondary
+            concern.
+          </p>
+
+          <div class="metric-row">
+            <div class="metric">
+              <span class="label">Clean ST</span>
+              <div class="value">94.05%</div>
+              <div class="sub">± 0.23 across seeds</div>
+            </div>
+            <div class="metric">
+              <span class="label">Clean PGD-AT</span>
+              <div class="value">82.28%</div>
+              <div class="sub">± 0.38 across seeds</div>
+            </div>
+            <div class="metric">
+              <span class="label">Δ clean (AT − ST)</span>
+              <div class="value">−11.77 pp</div>
+              <div class="sub">Layer 1 threshold: −5 pp</div>
+            </div>
+            <div class="metric">
+              <span class="label">PGD-20 robust (AT)</span>
+              <div class="value">48.40%</div>
+              <div class="sub">ε = 8/255 · ± 0.08</div>
+            </div>
+            <div class="metric">
+              <span class="label">AttackGap (AT)</span>
+              <div class="value">0.19 pp</div>
+              <div class="sub">Layer 2 threshold: 5 pp</div>
+            </div>
+            <div class="metric">
+              <span class="label">ECE clean (AT)</span>
+              <div class="value">0.098</div>
+              <div class="sub">± 0.007 · threshold 0.15</div>
+            </div>
+          </div>
+
+          <figure class="figure">
+            <img src="assets/figures/summary_bars.png" alt="Summary bar chart of key TriAudit metrics" />
+            <figcaption>Figure — Summary bars for the main reported metrics.</figcaption>
+          </figure>
+
+          <div class="table-wrap" style="margin-top: 2rem">
+            <table>
+              <thead>
+                <tr>
+                  <th>Seed</th>
+                  <th>Clean ST</th>
+                  <th>Clean AT</th>
+                  <th>PGD-20 AT</th>
+                  <th>Audit status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>0</td>
+                  <td>94.03%</td>
+                  <td>82.70%</td>
+                  <td>48.50%</td>
+                  <td class="status-major">Major concerns</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>94.29%</td>
+                  <td>81.97%</td>
+                  <td>48.35%</td>
+                  <td class="status-caveat">Caveat</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>93.83%</td>
+                  <td>82.16%</td>
+                  <td>48.36%</td>
+                  <td class="status-major">Major concerns</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- UTILITY -->
+      <section id="utility">
+        <div class="wrap reveal">
+          <p class="section-kicker">05 — Layer 1 · Clean utility</p>
+          <h2>Robustness is not free</h2>
+          <div class="split">
+            <div class="prose">
+              <p>
+                Layer 1 isolates the clean-accuracy price of adversarial training. In this study,
+                every seed crosses the −5 pp threshold: the mean gap is about
+                <strong>−11.8 percentage points</strong>.
+              </p>
+              <p>
+                That does not mean PGD-AT “failed.” It means any story that leads with robustness
+                must also lead with the utility cost. TriAudit records the tradeoff explicitly
+                instead of burying it in an appendix.
+              </p>
+              <p class="muted">
+                Note: AT used fewer epochs than ST in this release for compute control. Treat the
+                absolute gap as an audit signal under that protocol, not a universal AT tax.
+              </p>
+            </div>
+            <figure class="figure">
+              <img
+                src="assets/figures/clean_accuracy_tradeoff.png"
+                alt="Clean accuracy tradeoff between ST and PGD-AT"
+              />
+              <figcaption>Figure — Clean accuracy for ST versus PGD-AT.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- ROBUSTNESS -->
+      <section id="robustness">
+        <div class="wrap reveal">
+          <p class="section-kicker">06 — Layer 2 · Robustness</p>
+          <h2>White-box ℓ∞ behavior</h2>
+          <p class="lede">
+            At ε = 8/255, PGD-AT reaches roughly 48.4% PGD-20 robust accuracy. The AttackGap to
+            multi-restart PGD stays small (~0.19 pp), so Layer 2 does not flag.
+          </p>
+
+          <div class="figure-grid" style="margin-top: 1.75rem">
+            <figure class="figure">
+              <img
+                src="assets/figures/robust_acc_vs_eps.png"
+                alt="Robust accuracy versus epsilon"
+              />
+              <figcaption>Figure — Robust accuracy across the ε sensitivity grid.</figcaption>
+            </figure>
+            <figure class="figure">
+              <img
+                src="assets/figures/attack_adequacy.png"
+                alt="Attack adequacy comparing PGD-20 and multi-restart PGD"
+              />
+              <figcaption>Figure — Attack adequacy (PGD-20 vs multi-restart PGD).</figcaption>
+            </figure>
+          </div>
+
+          <figure class="figure">
+            <img
+              src="assets/figures/clean_vs_robust_tradeoff.png"
+              alt="Clean accuracy versus robust accuracy tradeoff"
+            />
+            <figcaption>Figure — Clean versus robust accuracy tradeoff.</figcaption>
+          </figure>
+
+          <div class="prose" style="margin-top: 1.5rem">
+            <p>
+              A small AttackGap is good news for evaluation credibility: the stronger multi-restart
+              procedure does not collapse the reported robust accuracy. That supports reading the
+              PGD-20 numbers as reasonably stable under this threat model — while remembering the
+              threat model itself is narrow (white-box ℓ∞ only).
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CALIBRATION -->
+      <section id="calibration">
+        <div class="wrap reveal">
+          <p class="section-kicker">07 — Layer 3 · Calibration</p>
+          <h2>Confidence under clean and attacked inputs</h2>
+          <div class="split">
+            <div class="prose">
+              <p>
+                Calibration asks whether a model’s confidence matches its frequency of being
+                correct. TriAudit reports ECE with 15 equal-width bins, plus NLL and multiclass
+                Brier, on clean images and on FGSM / PGD-20 adversaries.
+              </p>
+              <p>
+                Clean ECE for AT stays under the 0.15 threshold on average (~0.098). The
+                recurring Layer-3 trigger is <strong>PGD-20 ECE</strong> on seeds 0 and 2, where
+                confidence becomes less trustworthy precisely when the model is under attack.
+              </p>
+              <p>
+                Seed 1 stays just under the PGD-20 ECE threshold, which is why that seed lands at
+                Caveat rather than Major concerns.
+              </p>
+            </div>
+            <figure class="figure">
+              <img
+                src="assets/figures/calibration_panels.png"
+                alt="Calibration metric panels across conditions"
+              />
+              <figcaption>Figure — Calibration panels across evaluation conditions.</figcaption>
+            </figure>
+          </div>
+
+          <figure class="figure">
+            <img
+              src="assets/figures/reliability_diagrams_seed0.png"
+              alt="Reliability diagrams for seed 0"
+            />
+            <figcaption>Figure — Reliability diagrams for seed 0.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- AUDIT -->
+      <section id="audit">
+        <div class="wrap reveal">
+          <p class="section-kicker">08 — Audit status</p>
+          <h2>Putting the flags together</h2>
+          <p class="lede">
+            Layer 1 flags every seed. Layer 2 flags none. Layer 3 flags seeds 0 and 2. The
+            resulting statuses are Major concerns / Caveat / Major concerns.
+          </p>
+
+          <figure class="figure">
+            <img
+              src="assets/figures/audit_status_overview.png"
+              alt="Overview of TriAudit statuses across seeds"
+            />
+            <figcaption>Figure — Audit status overview across seeds.</figcaption>
+          </figure>
+
+          <div class="table-wrap" style="margin-top: 2rem">
+            <table>
+              <thead>
+                <tr>
+                  <th>Seed</th>
+                  <th>Layer 1</th>
+                  <th>Layer 2</th>
+                  <th>Layer 3</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>0</td>
+                  <td>Flagged (Δ ≈ −11.3 pp)</td>
+                  <td>Clear (gap ≈ 0.00 pp)</td>
+                  <td>Flagged (PGD-20 ECE)</td>
+                  <td class="status-major">Major concerns</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>Flagged (Δ ≈ −12.3 pp)</td>
+                  <td>Clear (gap ≈ 0.24 pp)</td>
+                  <td>Clear</td>
+                  <td class="status-caveat">Caveat</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Flagged (Δ ≈ −11.7 pp)</td>
+                  <td>Clear (gap ≈ 0.31 pp)</td>
+                  <td>Flagged (PGD-20 ECE)</td>
+                  <td class="status-major">Major concerns</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout">
+            <strong>How to read this</strong>
+            The dominant story is not “AT is useless.” It is “AT robustness arrives with a large
+            clean-accuracy bill, and confidence under strong attacks needs caution.” That is exactly
+            the kind of multi-axis statement TriAudit is designed to force.
+          </div>
+        </div>
+      </section>
+
+      <!-- LIMITS -->
+      <section id="limits">
+        <div class="wrap reveal">
+          <p class="section-kicker">09 — Limits</p>
+          <h2>What this audit does not claim</h2>
+          <div class="split">
+            <div class="prose">
+              <ul>
+                <li>CIFAR-10 only — no ImageNet, no detection, no language.</li>
+                <li>Single architecture family: CIFAR ResNet-18.</li>
+                <li>Only three paired seeds.</li>
+                <li>White-box ℓ∞ threat model only; no black-box or common corruptions suite as a primary claim.</li>
+                <li>Alert thresholds are project-defined for consistent reporting.</li>
+                <li>ST/AT epoch budgets were not identical in this release.</li>
+              </ul>
+            </div>
+            <div class="prose">
+              <ul>
+                <li>AutoAttack is listed in config history but not enabled in the shipped eval.</li>
+                <li>Checkpoints are not published in git (size); metrics and figures are.</li>
+                <li>Zero flags would still not imply deployment safety.</li>
+                <li>Missing metrics must never be interpreted as passing.</li>
+              </ul>
+              <p>
+                Full blueprint and limitations live in
+                <code>TriAudit_Final_Project_Architecture.md</code> and
+                <code>reports/TriAudit_research_report.md</code>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- REPRODUCE -->
+      <section id="reproduce">
+        <div class="wrap reveal">
+          <p class="section-kicker">10 — Reproduce & artifacts</p>
+          <h2>Run it yourself</h2>
+          <div class="split">
+            <div class="prose">
+              <p>From the repository root:</p>
+              <pre><code>python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+pip install -e .
+python scripts/prepare_data.py</code></pre>
+              <p>Phased orchestration:</p>
+              <pre><code>python scripts/auto/run_phase.py --phase N</code></pre>
+              <p>Regenerate presentation figures from logged metrics:</p>
+              <pre><code>PYTHONPATH=src python scripts/make_report_figures.py</code></pre>
+            </div>
+            <div>
+              <h3>Primary artifacts</h3>
+              <ul class="artifact-list">
+                <li>
+                  <a href="https://github.com/ridoy-adhikary/TriAudit-CIFAR10/blob/main/runs/eval/attacks_summary.json">
+                    attacks_summary.json
+                    <span>Aggregated attack metrics across seeds</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://github.com/ridoy-adhikary/TriAudit-CIFAR10/blob/main/runs/eval/calibration_summary.json">
+                    calibration_summary.json
+                    <span>ECE / NLL / Brier exports</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://github.com/ridoy-adhikary/TriAudit-CIFAR10/blob/main/runs/eval/audit_status.json">
+                    audit_status.json
+                    <span>Per-seed Layer 1–3 flags and status labels</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://github.com/ridoy-adhikary/TriAudit-CIFAR10/blob/main/reports/tables/summary_mean_std.json">
+                    summary_mean_std.json
+                    <span>Mean ± std table used in the report</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://github.com/ridoy-adhikary/TriAudit-CIFAR10/blob/main/reports/TriAudit_research_report.md">
+                    TriAudit_research_report.md
+                    <span>Generated research report markdown</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <div>
+          <strong>TriAudit</strong><br />
+          Controlled empirical audit of PGD-AT on CIFAR-10.
+        </div>
+        <div>
+          Hosted via GitHub Pages · Source:
+          <a href="https://github.com/ridoy-adhikary/TriAudit-CIFAR10"
+            >ridoy-adhikary/TriAudit-CIFAR10</a
+          >
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>

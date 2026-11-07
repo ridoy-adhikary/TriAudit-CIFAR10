@@ -13,6 +13,8 @@ TriAudit answers three questions at once for a seed-matched CIFAR ResNet-18 pair
 > This is an empirical study under a defined threat model — **not** deployment certification.  
 > **Zero audit flags ≠ safe to deploy.**
 
+**Project site:** [`docs/`](docs/) — open locally or host with GitHub Pages (`Settings → Pages → /docs`).
+
 <p align="center">
   <img src="reports/figures/methods_pipeline.png" alt="TriAudit methods pipeline" width="900"/>
 </p>
