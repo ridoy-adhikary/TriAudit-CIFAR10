@@ -11,15 +11,25 @@
     <link rel="stylesheet" href="assets/css/styles.css" />
   </head>
   <body>
-    <a class="skip-link" href="#overview">Skip to content</a>
+    <a class="skip-link" href="#abstract">Skip to content</a>
 
     <header class="site-nav">
       <div class="nav-inner">
         <a class="brand" href="#top">Tri<span>Audit</span></a>
-        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu">
-          Menu
-        </button>
+        <div class="nav-actions">
+          <a
+            class="nav-github"
+            href="https://github.com/ridoy-adhikary/TriAudit-CIFAR10"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-menu">
+            Menu
+          </button>
+        </div>
         <ul class="nav-links" id="site-menu">
+          <li><a href="#abstract">Abstract</a></li>
           <li><a href="#overview">Overview</a></li>
           <li><a href="#layers">Layers</a></li>
           <li><a href="#methods">Methods</a></li>
@@ -28,8 +38,17 @@
           <li><a href="#robustness">Robustness</a></li>
           <li><a href="#calibration">Calibration</a></li>
           <li><a href="#audit">Audit</a></li>
+          <li><a href="#compute">Compute</a></li>
           <li><a href="#limits">Limits</a></li>
           <li><a href="#reproduce">Reproduce</a></li>
+          <li>
+            <a
+              href="https://github.com/ridoy-adhikary/TriAudit-CIFAR10"
+              target="_blank"
+              rel="noopener noreferrer"
+              >GitHub ↗</a
+            >
+          </li>
         </ul>
       </div>
     </header>
@@ -47,8 +66,14 @@
               three questions: clean utility, white-box robustness, and confidence calibration.
             </p>
             <div class="hero-actions">
-              <a class="btn btn-primary" href="#results">See headline results</a>
-              <a class="btn btn-ghost" href="#methods">Read the method</a>
+              <a class="btn btn-primary" href="#abstract">Read the abstract</a>
+              <a
+                class="btn btn-ghost"
+                href="https://github.com/ridoy-adhikary/TriAudit-CIFAR10"
+                target="_blank"
+                rel="noopener noreferrer"
+                >View on GitHub</a
+              >
             </div>
           </div>
           <div class="hero-visual reveal">
@@ -63,10 +88,103 @@
         </div>
       </section>
 
+      <!-- ABSTRACT -->
+      <section id="abstract">
+        <div class="wrap reveal">
+          <p class="section-kicker">01 — Abstract</p>
+          <h2>Background, problem, and contribution</h2>
+          <p class="lede">
+            TriAudit is a controlled empirical audit of PGD adversarial training versus
+            standard training on CIFAR-10. It reports clean utility, white-box robustness, and
+            confidence calibration together — then compresses those findings into an explicit
+            audit status.
+          </p>
+
+          <div class="split" style="margin-top: 2rem">
+            <div class="prose">
+              <h3>Background</h3>
+              <p>
+                Deep image classifiers can be highly accurate on clean data and still fail under
+                tiny, carefully chosen perturbations. <strong>Adversarial training</strong> —
+                especially projected gradient descent adversarial training (PGD-AT) — is a common
+                defense: the model is trained on adversarial examples so it becomes harder to fool
+                at test time.
+              </p>
+              <p>
+                In practice, robustness papers often emphasize a single headline number (for
+                example, PGD robust accuracy). That can hide important side effects: a large drop
+                in clean accuracy, an attack suite that is too weak to stress the model, or
+                confidence scores that look calibrated on clean images but break under attack.
+              </p>
+
+              <h3>Problem statement</h3>
+              <p>
+                The core problem this project addresses is
+                <strong>incomplete reporting of adversarial training tradeoffs</strong>. A reader
+                can easily see “AT is more robust” without also seeing:
+              </p>
+              <ul>
+                <li>how much clean utility was paid for that gain,</li>
+                <li>whether the attack evaluation is adequate enough to trust the robust number,</li>
+                <li>whether model confidence remains reliable on clean and attacked inputs.</li>
+              </ul>
+              <p>
+                Without those axes, robustness claims are easy to over-read — especially outside
+                specialist audiences who already know the usual caveats.
+              </p>
+            </div>
+            <div class="prose">
+              <h3>What TriAudit solves</h3>
+              <p>
+                TriAudit turns that reporting gap into a concrete, reproducible audit protocol for
+                one well-scoped setting: CIFAR-10, CIFAR-adapted ResNet-18, seed-matched ST vs
+                PGD-AT, white-box ℓ∞ threat model.
+              </p>
+              <ul>
+                <li>
+                  <strong>Paired comparison:</strong> shared initialization and matched seeds so
+                  ST and AT are compared fairly.
+                </li>
+                <li>
+                  <strong>Three audit layers:</strong> clean utility, attack adequacy, and
+                  calibration — each with an explicit flag threshold.
+                </li>
+                <li>
+                  <strong>Status aggregation:</strong> flags become labels (Caveat, Major concerns,
+                  …) instead of leaving readers to invent their own summary.
+                </li>
+                <li>
+                  <strong>End-to-end artifacts:</strong> training metrics, attack/calibration JSON,
+                  figures, and this report site so the study can be inspected, not just asserted.
+                </li>
+              </ul>
+
+              <h3>What this is not</h3>
+              <p>
+                TriAudit does <strong>not</strong> claim a new state-of-the-art defense, nor does
+                it certify models for deployment. A clean audit under this scope only means: under
+                the tested threat model and thresholds, these were the measured tradeoffs.
+              </p>
+
+              <div class="hero-actions" style="margin-top: 1.25rem">
+                <a
+                  class="btn btn-primary"
+                  href="https://github.com/ridoy-adhikary/TriAudit-CIFAR10"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Open GitHub repository</a
+                >
+                <a class="btn btn-ghost" href="#results">Jump to results</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- OVERVIEW -->
       <section id="overview">
         <div class="wrap reveal">
-          <p class="section-kicker">01 — Overview</p>
+          <p class="section-kicker">02 — Overview</p>
           <h2>What this project asks</h2>
           <p class="lede">
             Adversarial training is often sold as a robustness upgrade. TriAudit checks what
@@ -115,7 +233,7 @@
       <!-- LAYERS -->
       <section id="layers">
         <div class="wrap reveal">
-          <p class="section-kicker">02 — Audit layers</p>
+          <p class="section-kicker">03 — Audit layers</p>
           <h2>Three layers, one status</h2>
           <p class="lede">
             Each layer asks a distinct question. Flags accumulate into a TriAudit status label
@@ -197,7 +315,7 @@
       <!-- METHODS -->
       <section id="methods">
         <div class="wrap reveal">
-          <p class="section-kicker">03 — Methods</p>
+          <p class="section-kicker">04 — Methods</p>
           <h2>How the comparison was controlled</h2>
           <p class="lede">
             The design goal is a fair paired contrast, not the strongest possible adversarial
@@ -249,7 +367,7 @@
       <!-- RESULTS -->
       <section id="results">
         <div class="wrap reveal">
-          <p class="section-kicker">04 — Headline results</p>
+          <p class="section-kicker">05 — Headline results</p>
           <h2>What the three seeds show</h2>
           <p class="lede">
             Across seeds, PGD-AT improves white-box robust accuracy but pays a large clean-accuracy
@@ -337,7 +455,7 @@
       <!-- UTILITY -->
       <section id="utility">
         <div class="wrap reveal">
-          <p class="section-kicker">05 — Layer 1 · Clean utility</p>
+          <p class="section-kicker">06 — Layer 1 · Clean utility</p>
           <h2>Robustness is not free</h2>
           <div class="split">
             <div class="prose">
@@ -370,7 +488,7 @@
       <!-- ROBUSTNESS -->
       <section id="robustness">
         <div class="wrap reveal">
-          <p class="section-kicker">06 — Layer 2 · Robustness</p>
+          <p class="section-kicker">07 — Layer 2 · Robustness</p>
           <h2>White-box ℓ∞ behavior</h2>
           <p class="lede">
             At ε = 8/255, PGD-AT reaches roughly 48.4% PGD-20 robust accuracy. The AttackGap to
@@ -416,7 +534,7 @@
       <!-- CALIBRATION -->
       <section id="calibration">
         <div class="wrap reveal">
-          <p class="section-kicker">07 — Layer 3 · Calibration</p>
+          <p class="section-kicker">08 — Layer 3 · Calibration</p>
           <h2>Confidence under clean and attacked inputs</h2>
           <div class="split">
             <div class="prose">
@@ -457,7 +575,7 @@
       <!-- AUDIT -->
       <section id="audit">
         <div class="wrap reveal">
-          <p class="section-kicker">08 — Audit status</p>
+          <p class="section-kicker">09 — Audit status</p>
           <h2>Putting the flags together</h2>
           <p class="lede">
             Layer 1 flags every seed. Layer 2 flags none. Layer 3 flags seeds 0 and 2. The
@@ -518,10 +636,145 @@
         </div>
       </section>
 
+      <!-- COMPUTE -->
+      <section id="compute">
+        <div class="wrap reveal">
+          <p class="section-kicker">10 — Compute</p>
+          <h2>Where and how the experiments ran</h2>
+          <p class="lede">
+            TriAudit is a GPU-first study. Training and white-box attack evaluation were run on a
+            shared CUDA machine; CPU-only execution was not the intended path for the full pipeline.
+          </p>
+
+          <div class="callout">
+            <strong>One-sentence methods note</strong>
+            Experiments were run on an NVIDIA RTX A4000 GPU using the <code>ridoy</code> PyTorch
+            CUDA environment; seed-paired ST/PGD-AT training took about 6 hours, and full white-box
+            attack evaluation about 1 additional hour.
+          </div>
+
+          <div class="split" style="margin-top: 2rem">
+            <div class="prose">
+              <h3>Hardware &amp; software</h3>
+              <ul>
+                <li><strong>Machine:</strong> shared server <code>scdx-X299-WU8</code></li>
+                <li><strong>GPU:</strong> NVIDIA RTX A4000 (CUDA)</li>
+                <li><strong>Environment:</strong> conda env <code>ridoy</code></li>
+                <li>
+                  <strong>Stack:</strong> PyTorch <code>2.7.1+cu118</code>, torchvision, CIFAR-10
+                  stored under <code>dataset/raw</code>
+                </li>
+              </ul>
+              <p>
+                All heavy steps — adversarial training’s inner PGD loop and the frozen-model attack
+                suite — depend on GPU throughput. That is why wall-clock below is reported for the
+                CUDA run, not a laptop CPU baseline.
+              </p>
+            </div>
+            <div class="prose">
+              <h3>What ran on GPU</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Work</th>
+                      <th>Scale</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>ST training</td>
+                      <td>3 seeds × 100 epochs</td>
+                    </tr>
+                    <tr>
+                      <td>PGD-AT training</td>
+                      <td>3 seeds × 50 epochs (inner PGD-10 every batch)</td>
+                    </tr>
+                    <tr>
+                      <td>Pilots</td>
+                      <td>ST 10 epochs + AT 3 epochs</td>
+                    </tr>
+                    <tr>
+                      <td>Attack eval</td>
+                      <td>FGSM / PGD-20 / multi-restart PGD at ε = 4, 8, 12/255 on the test set</td>
+                    </tr>
+                    <tr>
+                      <td>Calibration</td>
+                      <td>ECE / NLL / Brier on clean + attacked inputs</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <h3 style="margin-top: 2.25rem">Wall-clock (from phase logs)</h3>
+          <div class="metric-row">
+            <div class="metric">
+              <span class="label">Paired training · phase 4</span>
+              <div class="value">~6.2 h</div>
+              <div class="sub">23:41 → 05:53</div>
+            </div>
+            <div class="metric">
+              <span class="label">Attack evaluation · phase 5</span>
+              <div class="value">~1.2 h</div>
+              <div class="sub">05:53 → 07:04</div>
+            </div>
+            <div class="metric">
+              <span class="label">Full pipeline · phases 0–9</span>
+              <div class="value">~7.5–8 h</div>
+              <div class="sub">Calibration / stats / report: seconds</div>
+            </div>
+          </div>
+
+          <div class="prose">
+            <p>
+              After attack evaluation finished, calibration export, audit aggregation, figure
+              generation, and the research report were essentially instantaneous relative to
+              training — on the order of seconds, not hours.
+            </p>
+          </div>
+
+          <h3 style="margin-top: 1.75rem">Storage footprint</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Artifact</th>
+                  <th>Approximate size</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Single checkpoint (<code>*.pt</code>)</td>
+                  <td>≈ 43 MB</td>
+                </tr>
+                <tr>
+                  <td>6 final models + pilots</td>
+                  <td>≈ 350 MB checkpoints</td>
+                </tr>
+                <tr>
+                  <td>CIFAR-10 raw download</td>
+                  <td>≈ 340 MB</td>
+                </tr>
+                <tr>
+                  <td>GitHub package (no checkpoints / raw data)</td>
+                  <td>≈ 1.9 MB</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="muted" style="margin-top: 1rem">
+            Checkpoints and the CIFAR raw cache stay local / gitignored. The public repo keeps code,
+            configs, metrics JSON, figures, and this report site.
+          </p>
+        </div>
+      </section>
+
       <!-- LIMITS -->
       <section id="limits">
         <div class="wrap reveal">
-          <p class="section-kicker">09 — Limits</p>
+          <p class="section-kicker">11 — Limits</p>
           <h2>What this audit does not claim</h2>
           <div class="split">
             <div class="prose">
@@ -554,7 +807,7 @@
       <!-- REPRODUCE -->
       <section id="reproduce">
         <div class="wrap reveal">
-          <p class="section-kicker">10 — Reproduce & artifacts</p>
+          <p class="section-kicker">12 — Reproduce & artifacts</p>
           <h2>Run it yourself</h2>
           <div class="split">
             <div class="prose">
